@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>blocktopproducts</name>
+	<displayName><![CDATA[Top products]]></displayName>
+	<version><![CDATA[1.0.0]]></version>
+	<description><![CDATA[Display top products in top of category]]></description>
+	<author><![CDATA[Rafał Woźniak]]></author>
+	<tab><![CDATA[administration]]></tab>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+</module>
