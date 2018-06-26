@@ -350,9 +350,19 @@ class Blocktopproducts extends Module
                             'description_short' => $product->description_short,
                             'delivery_time' => $product->supplier_name,
                             'on_sale' => $product->on_sale,
-                            'specificPrice' => $product->specificPrice,
+                            'specific_prices' => $product->specificPrice,
                             'wholesale_price' => $product->wholesale_price,
-                            'image' => $this->returnImage($this->getImagesByIdAttibute($this->context->language->id, $product->id_product, $product->getDefaultAttribute($product->id_product)), 420, 280)
+                            'price_without_reduction' => Product::getPriceStatic(
+                                (int)$product->id_product,
+                                true,
+                                (int)$product->getDefaultAttribute($product->id_product),
+                                2,
+                                null,
+                                false,
+                                false
+                            ),
+                            'image' => $this->returnImage($this->getImagesByIdAttibute($this->context->language->id, $product->id_product, $product->getDefaultAttribute($product->id_product)), 420, 280),
+                            'link' => $product->getLink(),
                         );
                 }
 
