@@ -3,7 +3,9 @@
 
 <section class="blocktopproducts row">
 
-<h1 class="blocktopproducts-title text-center">{l s='Top products' mod='blocktopproducts'}</h1>
+<div class="row top_title">
+	<h4><span>{l s='Top products' mod='blocktopproducts'}</span></h4>
+</div>
 
 {foreach from=$topproducts item=topproduct}
 
@@ -11,17 +13,20 @@
 		
 		<figure class="topproducts">
 
-			<img class="img-responsive" src="{$topproduct.image}" width="420" height="250"/>
+			<a href="{$topproduct.link}"><img class="img-responsive lazyProducts" data-original="{$topproduct.image}" width="420" height="250"/></a>
 
 			<figurecaption class="topproducts-block">
-				<h4 class="topproducts-title">{$topproduct.name}</h4>
-				<p class="topproducts-price{if $topproduct.specificPrice.reduction} on-sale{/if}">{convertPrice price=$topproduct.price}{if $topproduct.specificPrice.reduction}<span class="old-price"> {convertPrice price=($topproduct.specificPrice.reduction+$topproduct.price)}</span>{/if}</p>
+				<a href="{$topproduct.link}"><h4 class="topproducts-title">{$topproduct.name}</h4></a>
+				<p class="topproducts-price">
+				<span class="price{if $topproduct.specific_prices.reduction} price-on-sale{/if}">{if !$priceDisplay}{convertPrice price=$topproduct.price}{else}{convertPrice price=$topproduct.price_tax_exc}{/if}</span>
+				{if $topproduct.specific_prices.reduction}<span class="price old-price">{displayWtPrice p=$topproduct.price_without_reduction}</span>{/if} 
+				</p>
 				<div class="topproducts-desciption">{$topproduct.description_short}</div>
-				<span class="topproducts-delivery">{$topproduct.delivery_time}</span>
+				<p class="topproducts-delivery"><i class="fa fa-truck"></i> <span class="topproducts-delivery__label">{l s='Delivery time:' mod='blocktopproducts'}: </span><span class="topproducts-delivery__time">{$topproduct.delivery_time}</span></p> 
 			</figurecaption>
 
 		</figure>		
-
+		
 	</article>
 
 
