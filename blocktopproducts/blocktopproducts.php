@@ -33,9 +33,6 @@ class Blocktopproducts extends Module
         $this->need_instance = 1;
         $this->errors = false;
 
-        /**
-         * Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
-         */
         $this->bootstrap = true;
 
         parent::__construct();
@@ -60,13 +57,14 @@ class Blocktopproducts extends Module
         return parent::install() &&
             $this->registerHook('header') &&
             $this->registerHook('backOfficeHeader') &&
+            $this->registerHook('dashboardZoneOne') &&
             $this->registerHook('topProducts');
     }
 
     public function uninstall()
     {
 
-        include(dirname(__FILE__).'/sql/uninstall.php');
+        //include(dirname(__FILE__).'/sql/uninstall.php');
 
         return parent::uninstall();
     }
@@ -376,4 +374,53 @@ class Blocktopproducts extends Module
         return $this->context->smarty->fetch($this->local_path.'views/templates/hook/blocktopproducts.tpl');
 
     }
+
+
+    public function getCoutProductsByIdCategory($id_category)
+    {
+
+    	return Db::getInstance()->getValue('SELECT COUNT(id_products) FROM `'._DB_PREFIX_.'blocktopproducts` WHERE id_category = '.(int)$id_category);
+
+    }
+
+    public function getTopCategory() 
+    {
+
+        $topProductsCategories = Db::getInstance()->executeS('SELECT DISTINCT id_category FROM `'._DB_PREFIX_.'blocktopproducts`');
+
+        $output = [];
+
+        foreach ($topProductsCategories as &$item) {
+
+        	$products_count = $this->getCoutProductsByIdCategory($item['id_category']);
+
+        	if($products_count < 2) {
+
+        		$output[] = [
+        			'id_category' => $item['id_category'],
+        			'category_path' => $this->createCategoryPath($item['id_category'], $this->context->language->id),
+        			'products_count' => $products_count
+        		];
+        	}
+   
+        }
+
+        return $output;
+    }
+
+    public function hookDashboardZoneOne()
+    {
+       
+    	$topProductsCategories = $this->getTopCategory();
+
+    	$this->context->smarty->assign([
+    		'topProductsCategories' => $topProductsCategories,
+    	]);
+
+    	
+
+    	return $this->context->smarty->fetch($this->local_path.'views/templates/hook/dashboard.tpl');
+
+    }
+
 }
