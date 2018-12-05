@@ -410,17 +410,10 @@ class Blocktopproducts extends Module
 
     public function hookDashboardZoneOne()
     {
-       
     	$topProductsCategories = $this->getTopCategory();
-
-    	$this->context->smarty->assign([
-    		'topProductsCategories' => $topProductsCategories,
-    	]);
-
+    	$this->context->smarty->assign('topProductsCategories', $topProductsCategories);
     	
-
     	return $this->context->smarty->fetch($this->local_path.'views/templates/hook/dashboard.tpl');
-
     }
 
 }
