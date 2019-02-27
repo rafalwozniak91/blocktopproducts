@@ -52,7 +52,7 @@ class Blocktopproducts extends Module
     public function install()
     {
 
-        include(dirname(__FILE__).'/sql/install.php');
+        //include(dirname(__FILE__).'/sql/install.php');
 
         return parent::install() &&
             $this->registerHook('header') &&
@@ -379,8 +379,9 @@ class Blocktopproducts extends Module
     public function getCoutProductsByIdCategory($id_category)
     {
 
-    	return Db::getInstance()->getValue('SELECT COUNT(id_products) FROM `'._DB_PREFIX_.'blocktopproducts` WHERE id_category = '.(int)$id_category);
-
+    	return Db::getInstance()->getValue('SELECT COUNT(id_products) FROM `'._DB_PREFIX_.'blocktopproducts` tp
+                                            LEFT JOIN `'._DB_PREFIX_.'product` p ON (tp.id_products = p.id_product)
+                                            WHERE tp.id_category = '.(int)$id_category.' AND p.active = 1');
     }
 
     public function getTopCategory() 
@@ -392,7 +393,7 @@ class Blocktopproducts extends Module
 
         foreach ($topProductsCategories as &$item) {
 
-        	$products_count = $this->getCoutProductsByIdCategory($item['id_category']);
+        	$products_count = (int)$this->getCoutProductsByIdCategory($item['id_category']);
 
         	if($products_count < 2) {
 
@@ -410,10 +411,17 @@ class Blocktopproducts extends Module
 
     public function hookDashboardZoneOne()
     {
+       
     	$topProductsCategories = $this->getTopCategory();
-    	$this->context->smarty->assign('topProductsCategories', $topProductsCategories);
+
+    	$this->context->smarty->assign([
+    		'topProductsCategories' => $topProductsCategories,
+    	]);
+
     	
+
     	return $this->context->smarty->fetch($this->local_path.'views/templates/hook/dashboard.tpl');
+
     }
 
 }
