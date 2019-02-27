@@ -2,12 +2,6 @@
 	<div class="panel-heading">
 		<i class="icon-bar-chart"></i>
 		{l s='Top Products' mod='blocktopproducts'}
-
-{* 		<span class="panel-heading-action">
-			<a class="list-toolbar-btn" href="#">
-				<i class="process-icon-configure"></i>
-			</a>
-		</span> *}
 	</div>
 
 	<div class="table-responsive">
