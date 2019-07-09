@@ -1,2 +1,1 @@
-# blocktopproducts
-Prestashop module
+# Top products
